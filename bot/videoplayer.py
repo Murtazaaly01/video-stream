@@ -35,7 +35,7 @@ async def vstream(_, m: Message):
         return
 
     media = m.reply_to_message
-    if not media and not ' ' in m.text:
+    if not media and ' ' not in m.text:
         await m.reply_text("🔺 **please reply to a video or live stream url or youtube url to stream the video!**")
 
     elif ' ' in m.text:
@@ -43,8 +43,7 @@ async def vstream(_, m: Message):
         text = m.text.split(' ', 1)
         query = text[1]
         regex = r"^(https?\:\/\/)?(www\.youtube\.com|youtu\.?be)\/.+"
-        match = re.match(regex,query)
-        if match:
+        if match := re.match(regex, query):
             await msg.edit("🔄 **starting youtube streaming...**")
             try:
                 meta = ydl.extract_info(query, download=False)
